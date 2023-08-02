@@ -1,5 +1,4 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import { styled, css } from 'styled-components';
 import palette from '../../lib/styles/palette';
 
 const StyledButton = styled.button`
@@ -17,22 +16,32 @@ const StyledButton = styled.button`
     background: ${palette.gray[6]};
   }
 
-  ${(props) =>
-    props.fullWidth &&
-    css`
-      padding-top: 0.75rem;
-      padding-bottom: 0.75rem;
-      width: 100%;
-      font-size: 1.125rem;
-    `}
+  ${(props) => {
+    //console.log('props:', props);
+    return (
+      props.$fullWidth &&
+      css`
+        padding-top: 0.75rem;
+        padding-bottom: 0.75rem;
+        width: 100%;
+        font-size: 1.125rem;
+      `
+    );
+  }}
 
   ${(props) =>
-    props.cyan &&
+    props.$cyan &&
     css`
       background: ${palette.cyan[5]};
       &:hover {
         background: ${palette.cyan[4]};
       }
+    `}
+
+${(props) =>
+    props.$marginTop &&
+    css`
+      margin-top: ${props.$marginTop};
     `}
 `;
 

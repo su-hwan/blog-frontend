@@ -1,14 +1,97 @@
+import { produce } from 'immer';
 import { createAction, handleActions } from 'redux-actions';
+import createRequestSaga, {
+  createRequestActionType,
+} from '../lib/createRequestSaga';
+import * as authApi from '../lib/api/auth';
+import { takeLatest } from 'redux-saga/effects';
 
-const SAMPLE_ACTION = 'auth/SAMPLE_ACTION';
+const CHANGE_FILED = 'auth/CHANGE_FILED';
+const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
 
-export const sampleAction = createAction(SAMPLE_ACTION);
+const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] =
+  createRequestActionType('auth/REGISTER');
 
-const initialState = {};
+const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
+  createRequestActionType('auth/LOGIN');
+
+//input filed값 저장 action
+export const changeFiled = createAction(
+  CHANGE_FILED,
+  ({ form, key, value }) => ({
+    form, //login, register form
+    key, //username, password, passwordConfirm
+    value, //key의 값
+  }),
+);
+//form의 input filed 초기화 action
+export const initializeForm = createAction(INITIALIZE_FORM, (form) => form);
+//회원가입 action
+export const register = createAction(REGISTER, ({ username, password }) => ({
+  username,
+  password,
+}));
+//로그인 action
+export const login = createAction(LOGIN, ({ username, password }) => ({
+  username,
+  password,
+}));
+
+//Saga로 백엔드서버 통신
+const registerSaga = createRequestSaga(REGISTER, authApi.register);
+const loginSaga = createRequestSaga(REGISTER, authApi.login);
+export function* authSaga() {
+  yield takeLatest(REGISTER, registerSaga); //takeLatest:기존작업 취소하고 마지막작업 수행
+  yield takeLatest(LOGIN, loginSaga);
+}
+const initialState = {
+  login: {
+    username: '',
+    password: '',
+  },
+  register: {
+    username: '',
+    password: '',
+    passwordConfirm: '',
+  },
+  auth: null,
+  authError: null,
+};
 
 const authReducer = handleActions(
   {
-    [SAMPLE_ACTION]: (state, action) => state,
+    [CHANGE_FILED]: (state, { payload: { form, key, value } }) => {
+      //console.log(key, ':', value);
+      //immer
+      return produce(
+        state,
+        (draft) => {
+          draft[form][key] = value;
+        } /* ex) state.login.username */,
+      );
+    },
+    [INITIALIZE_FORM]: (state, { payload: form }) => ({
+      ...state,
+      [form]: initialState[form],
+    }),
+    [REGISTER_SUCCESS]: (state, { payload: auth }) => ({
+      ...state,
+      authError: null,
+      auth,
+    }),
+    [REGISTER_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      authError: error,
+    }),
+    [LOGIN_SUCCESS]: (state, { payload: auth }) => ({
+      ...state,
+      authError: null,
+      auth,
+    }),
+    [LOGIN_FAILURE]: (state, { payload: error }) => ({
+      ...state,
+      authError: error,
+    }),
   },
   initialState,
 );

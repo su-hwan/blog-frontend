@@ -4,13 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { legacy_createStore } from 'redux';
-import rootReducer from './modules';
+import { compose, legacy_createStore, applyMiddleware } from 'redux';
+import rootReducer, { rootSaga } from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const store = legacy_createStore(rootReducer, composeWithDevTools());
+const sagaMiddleware = createSagaMiddleware();
+const enhancer =
+  process.env.NODE_ENV === 'production'
+    ? compose(applyMiddleware(sagaMiddleware))
+    : composeWithDevTools(applyMiddleware(sagaMiddleware));
+const store = legacy_createStore(rootReducer, enhancer);
+sagaMiddleware.run(rootSaga);
 root.render(
   <Provider store={store}>
     <React.StrictMode>
