@@ -1,23 +1,23 @@
 import { produce } from 'immer';
 import { createAction, handleActions } from 'redux-actions';
 import createRequestSaga, {
-  createRequestActionType,
+  createRequestActionTypes,
 } from '../lib/createRequestSaga';
-import * as authApi from '../lib/api/auth';
+import * as authAPI from '../lib/api/auth';
 import { takeLatest } from 'redux-saga/effects';
 
-const CHANGE_FILED = 'auth/CHANGE_FILED';
+const CHANGE_FIELD = 'auth/CHANGE_FIELD';
 const INITIALIZE_FORM = 'auth/INITIALIZE_FORM';
 
 const [REGISTER, REGISTER_SUCCESS, REGISTER_FAILURE] =
-  createRequestActionType('auth/REGISTER');
+  createRequestActionTypes('auth/REGISTER');
 
 const [LOGIN, LOGIN_SUCCESS, LOGIN_FAILURE] =
-  createRequestActionType('auth/LOGIN');
+  createRequestActionTypes('auth/LOGIN');
 
 //input filed값 저장 action
-export const changeFiled = createAction(
-  CHANGE_FILED,
+export const changeField = createAction(
+  CHANGE_FIELD,
   ({ form, key, value }) => ({
     form, //login, register form
     key, //username, password, passwordConfirm
@@ -27,10 +27,13 @@ export const changeFiled = createAction(
 //form의 input filed 초기화 action
 export const initializeForm = createAction(INITIALIZE_FORM, (form) => form);
 //회원가입 action
-export const register = createAction(REGISTER, ({ username, password }) => ({
-  username,
-  password,
-}));
+export const register = createAction(REGISTER, ({ username, password }) => {
+  console.log(REGISTER, username, password);
+  return {
+    username,
+    password,
+  };
+});
 //로그인 action
 export const login = createAction(LOGIN, ({ username, password }) => ({
   username,
@@ -38,21 +41,23 @@ export const login = createAction(LOGIN, ({ username, password }) => ({
 }));
 
 //Saga로 백엔드서버 통신
-const registerSaga = createRequestSaga(REGISTER, authApi.register);
-const loginSaga = createRequestSaga(REGISTER, authApi.login);
+const registerSaga = createRequestSaga(REGISTER, authAPI.register);
+const loginSaga = createRequestSaga(LOGIN, authAPI.login);
+
+//saga middleware
 export function* authSaga() {
   yield takeLatest(REGISTER, registerSaga); //takeLatest:기존작업 취소하고 마지막작업 수행
   yield takeLatest(LOGIN, loginSaga);
 }
 const initialState = {
-  login: {
-    username: '',
-    password: '',
-  },
   register: {
     username: '',
     password: '',
     passwordConfirm: '',
+  },
+  login: {
+    username: '',
+    password: '',
   },
   auth: null,
   authError: null,
@@ -60,7 +65,7 @@ const initialState = {
 
 const authReducer = handleActions(
   {
-    [CHANGE_FILED]: (state, { payload: { form, key, value } }) => {
+    [CHANGE_FIELD]: (state, { payload: { form, key, value } }) => {
       //console.log(key, ':', value);
       //immer
       return produce(

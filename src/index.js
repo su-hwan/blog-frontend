@@ -4,7 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import { compose, legacy_createStore, applyMiddleware } from 'redux';
+import {
+  compose,
+  legacy_createStore as createStore,
+  applyMiddleware,
+} from 'redux';
 import rootReducer, { rootSaga } from './modules';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
@@ -16,7 +20,7 @@ const enhancer =
   process.env.NODE_ENV === 'production'
     ? compose(applyMiddleware(sagaMiddleware))
     : composeWithDevTools(applyMiddleware(sagaMiddleware));
-const store = legacy_createStore(rootReducer, enhancer);
+const store = createStore(rootReducer, enhancer);
 sagaMiddleware.run(rootSaga);
 root.render(
   <Provider store={store}>

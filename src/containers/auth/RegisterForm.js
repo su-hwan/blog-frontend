@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
-  changeFiled,
+  changeField,
   initializeForm,
   register,
 } from '../../modules/authReducer';
-import AuthForm from '../../auth/AuthForm';
+import AuthForm from '../../components/auth/AuthForm';
 
 const RegisterForm = () => {
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const RegisterForm = () => {
   const onChange = (e) => {
     const { name, value } = e.target;
     dispatch(
-      changeFiled({
+      changeField({
         form: 'register',
         key: name,
         value,

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFiled, initializeForm } from '../../modules/authReducer';
-import AuthForm from '../../auth/AuthForm';
+import { changeField, initializeForm } from '../../modules/authReducer';
+import AuthForm from '../../components/auth/AuthForm';
 
 const LoginForm = () => {
   //reducer action
@@ -14,7 +14,7 @@ const LoginForm = () => {
   const onChange = (e) => {
     const { value, name } = e.target;
     dispatch(
-      changeFiled({
+      changeField({
         form: 'login',
         key: name,
         value,
