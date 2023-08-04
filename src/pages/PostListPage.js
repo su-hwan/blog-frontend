@@ -1,11 +1,12 @@
 import React from 'react';
-import Button from '../components/common/Button';
+import HeaderContainer from '../containers/HeaderContainer';
 
 const PostListPage = () => {
   return (
-    <div>
-      <Button>Post List</Button>
-    </div>
+    <>
+      <HeaderContainer />
+      <div>Post List</div>
+    </>
   );
 };
 
