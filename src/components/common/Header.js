@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import { styled } from 'styled-components';
 import Responsive from './Responsive';
-import Button from '../components/common/Button';
+import Button from './Button';
 import { Link } from 'react-router-dom';
 
 const HeaderBlock = styled.div`
@@ -44,7 +44,7 @@ const UserInfo = styled.div`
   margin-right: 1rem;
 `;
 
-const Header = ({ user }) => {
+const Header = ({ user, onLogout }) => {
   console.log('user:', user);
   return (
     <>
@@ -57,7 +57,7 @@ const Header = ({ user }) => {
             {user ? (
               <>
                 <UserInfo>{user.username}</UserInfo>
-                <Button to="/logout">LOGOUT</Button>
+                <Button onClick={onLogout}>LOGOUT</Button>
               </>
             ) : (
               <>

@@ -14,9 +14,22 @@ import rootReducer, { rootSaga } from './modules';
 // import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
+import { check, tempSetUser } from './modules/userReducer';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const sagaMiddleware = createSagaMiddleware();
+
+function loadUser() {
+  try {
+    //로그인 유저 존재여부 확인
+    const user = localStorage.getItem('user');
+    if (!user) return;
+    store.dispatch(tempSetUser(user));
+    store.dispatch(check());
+  } catch (e) {
+    console.log('localStorage is not working');
+  }
+}
 
 // const enhancer =
 //   process.env.NODE_ENV === 'production'
@@ -31,6 +44,7 @@ const store = configureStore({
 });
 
 sagaMiddleware.run(rootSaga);
+loadUser();
 
 root.render(
   <Provider store={store}>
