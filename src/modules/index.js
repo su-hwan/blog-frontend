@@ -6,10 +6,10 @@ import writeReducer, { writeSaga } from './writeReducer';
 import { all } from 'redux-saga/effects';
 
 const rootReducer = combineReducers({
-  writeReducer,
   authReducer,
   loadingReducer,
   userReducer,
+  writeReducer,
 });
 export function* rootSaga() {
   yield all([authSaga(), userSaga(), writeSaga()]); //() -> 안 넣어서 ㅅㅅㅂㅂ~~ 원인 찾으려고 하루 보냄
