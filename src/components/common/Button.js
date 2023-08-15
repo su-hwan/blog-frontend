@@ -30,14 +30,18 @@ const buttonStyle = css`
     );
   }}
 
-  ${(props) =>
-    props.$cyan &&
-    css`
-      background: ${palette.cyan[5]};
-      &:hover {
-        background: ${palette.cyan[4]};
-      }
-    `}
+  ${(props) => {
+    // console.log('props.$cyan ==========> ', props.$cyan);
+    return (
+      props.$cyan &&
+      css`
+        background: ${palette.cyan[5]};
+        &:hover {
+          background: ${palette.cyan[4]};
+        }
+      `
+    );
+  }}
 
 ${(props) =>
     props.$marginTop &&
