@@ -67,6 +67,13 @@ const Editor = ({ onChangeField, title, body }) => {
     onChangeField({ key: 'title', value: e.target.value });
   };
 
+  const mounted = useRef(null);
+  useEffect(() => {
+    if (mounted.current) return;
+    mounted.current = true;
+    quillInstance.current.root.innerHTML = body;
+  }, [body]);
+
   return (
     <EditorBlock>
       <TitleInput

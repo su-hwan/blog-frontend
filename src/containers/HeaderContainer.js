@@ -11,7 +11,7 @@ const HeaderContainer = () => {
   const onLogout = () => {
     dispatch(logout());
   };
-  console.log('user:', user);
+  // console.log('user:', user);
   return <Header user={user} onLogout={onLogout} />;
 };
 

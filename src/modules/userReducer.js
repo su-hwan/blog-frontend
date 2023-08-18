@@ -52,7 +52,7 @@ const initialState = {
 export default handleActions(
   {
     [TEMP_SET_USER]: (state, action) => {
-      console.log(TEMP_SET_USER, ':', action);
+      //console.log(TEMP_SET_USER, ':', action);
       return { ...state, user: action.payload };
     },
     [CHECK_SUCCESS]: (state, { payload: user }) => ({

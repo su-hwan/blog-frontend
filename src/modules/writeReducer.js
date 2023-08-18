@@ -7,12 +7,14 @@ import { takeLatest } from 'redux-saga/effects';
 
 const INITIALIZE = 'write/INITIALIZE'; //모든 내용 초기화
 const CHANGE_FIELD = 'write/CHANGE_FIELD'; //input form key value
+const SET_ORIGINAL_POST = 'write/SET_ORIGINAL_POST';
 
 export const initialize = createAction(INITIALIZE);
 export const changeField = createAction(CHANGE_FIELD, ({ key, value }) => ({
   key,
   value,
 }));
+export const setOriginalPost = createAction(SET_ORIGINAL_POST, (post) => post);
 
 const [WRITE_POST, WRITE_POST_SUCCESS, WRITE_POST_FAILURE] =
   createRequestActionTypes('write/WRITE_POST'); //포스트 작성
@@ -35,6 +37,7 @@ const initialState = {
   tags: [],
   post: null,
   postError: null,
+  originalPostId: null,
 };
 
 const writeReducer = handleActions(
@@ -57,6 +60,16 @@ const writeReducer = handleActions(
       ...state,
       postError,
     }),
+    [SET_ORIGINAL_POST]: (state, { payload: post }) => {
+      const { title, body, tags, _id } = post;
+      return {
+        ...state,
+        title,
+        body,
+        tags,
+        originalPostId: _id,
+      };
+    },
   },
   initialState,
 );

@@ -14,11 +14,13 @@ function App() {
         React Router 6.5 이상에서 @ 지원 제외
         username @ 사용하기 위해서는 params.username.split('@')[1]
       */}
-      <Route path="/:username" element={<PostListPage />} />
+      <Route path="/:username">
+        <Route index element={<PostListPage />} />
+        <Route path=":postId" element={<PostPage />} />
+      </Route>
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/write" element={<WritePage />} />
-      <Route path="/:username/:postId" element={<PostPage />} />
     </Routes>
   );
 }

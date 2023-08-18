@@ -19,16 +19,21 @@ export default function createRequestSaga(type, callAPI) {
 
   /* yield */
   return function* (action) {
+    console.log('action ==> ', action);
     //put -> action를 dispatch 한다
     yield put(startLoading(type)); //로딩시작
     try {
       const response = yield call(callAPI, action.payload);
+      // console.log('calllAPI:', callAPI, ',', response.data);
+      console.log('response ==> ', response);
       //put -> 익명 dispatch
       yield put({
         type: SUCCESS,
         payload: response.data,
+        meta: response,
       });
     } catch (error) {
+      console.log('error ====> ', error);
       yield put({
         type: FAILURE,
         payload: error,

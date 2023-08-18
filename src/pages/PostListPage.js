@@ -1,11 +1,13 @@
-import React from 'react';
 import HeaderContainer from '../containers/HeaderContainer';
+import PaginationContainer from '../containers/posts/PaginationContainer';
+import PostListContainer from '../containers/posts/PostListContainer';
 
 const PostListPage = () => {
   return (
     <>
       <HeaderContainer />
-      <div>Post List</div>
+      <PostListContainer />
+      <PaginationContainer />
     </>
   );
 };
