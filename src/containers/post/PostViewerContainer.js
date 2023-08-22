@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import PostViewer from '../../components/post/PostViewer';
 import PostActionButtons from '../../components/post/PostActionButtons';
 import { setOriginalPost } from '../../modules/writeReducer';
+import { removePost } from '../../lib/api/posts';
 
 const PostViewerContainer = () => {
   const { postId } = useParams();
@@ -32,7 +33,14 @@ const PostViewerContainer = () => {
     dispath(setOriginalPost(post));
     navigate('/write');
   };
-  const onRemove = () => {};
+  const onRemove = async () => {
+    try {
+      await removePost(postId);
+      navigate('/'); //move home
+    } catch (e) {
+      console.log(e);
+    }
+  };
   return (
     <PostViewer
       post={post}

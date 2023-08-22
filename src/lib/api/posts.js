@@ -21,3 +21,7 @@ export const listPosts = ({ page, username, tag }) => {
   });
   return client.get(`/api/posts?${queryString}`);
 };
+
+export const removePost = (id) => {
+  return client.delete(`/api/posts/${id}`);
+};
